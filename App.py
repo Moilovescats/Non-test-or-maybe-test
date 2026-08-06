@@ -34,12 +34,23 @@ def build_page(path):
       position: relative;
       z-index: 1;
     }
-    .hero-header {
+    .title-box {
       position: absolute;
-      top: 1rem;
-      left: 1rem;
-      z-index: 2;
-      pointer-events: none;
+      top: 0;
+      left: 0;
+      z-index: 3;
+      background: #ffffff;
+      padding: 0.5rem 0.9rem;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+      border-bottom-right-radius: 12px;
+    }
+    .title-box h1 {
+      margin: 0;
+      font-size: 1.05rem;
+      color: #111827;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      font-weight: 800;
     }
     h1 {
       margin: 0;
@@ -56,6 +67,18 @@ def build_page(path):
       gap: 1rem;
       margin-top: 1.5rem;
       flex-wrap: wrap;
+    }
+    #home-intro {
+      display: inline-block;
+      padding: 0.85rem 1.1rem;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.97);
+      border: none;
+      box-shadow: 0 10px 28px rgba(37,99,235,0.14);
+      font-weight: 800;
+      color: #0f172a;
+      font-size: 1.15rem;
+      letter-spacing: 0.01em;
     }
     .button {
       padding: 0.95rem 1.4rem;
@@ -78,11 +101,9 @@ def build_page(path):
   </style>
 </head>
 <body>
+  <div class=\"title-box\"><h1>StretchItOut</h1></div>
   <div class=\"card\">
-    <div class="hero-header">
-      <h1>StretchItOut</h1>
-    </div>
-    <p>Choose what you want to explore.</p>
+      <p id=\"home-intro\">Choose what you want to explore.</p>
     <div class=\"button-row\">
       <a class=\"button\" href=\"/stretches\">Stretches</a>
       <a class=\"button\" href=\"/alarms\">Alarm</a>
@@ -90,6 +111,7 @@ def build_page(path):
   </div>
 </body>
 </html>"""
+    
 
     if path == "/stretches":
         return """<!DOCTYPE html>
