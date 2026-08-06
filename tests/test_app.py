@@ -17,6 +17,15 @@ class AppPageTests(unittest.TestCase):
         self.assertIn("Soft sound", page)
         self.assertIn("Stop reminder", page)
 
+    def test_stretches_page_contains_tailored_suggestions_and_ratings(self):
+        page = build_page("/stretches")
+
+        self.assertIn("Stretch suggestions", page)
+        self.assertIn("Tailor this list to your preferences", page)
+        self.assertIn("Rate this stretch", page)
+        self.assertIn("Gentle", page)
+        self.assertIn("Shoulder rolls", page)
+
 
 if __name__ == "__main__":
     unittest.main()
