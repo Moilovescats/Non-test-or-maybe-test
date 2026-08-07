@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stretches</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="page-stretches">
+  <main class="card">
+    <h1>Stretches</h1>
+    <p class="intro">Stretch suggestions for different moods, energy levels, and comfort preferences. Tailor this list to your preferences and rate each one so others can see what worked for you.</p>
+
+    <div class="filters" aria-label="Stretch preference filters">
+      <button class="filter-pill active" data-filter="all">All</button>
+      <button class="filter-pill" data-filter="Gentle">Gentle</button>
+      <button class="filter-pill" data-filter="Desk">Desk</button>
+      <button class="filter-pill" data-filter="Quick">Quick</button>
+      <button class="filter-pill" data-filter="Home">Home</button>
+      <button class="filter-pill" data-filter="At desk">At desk</button>
+    </div>
+
+    <div class="stretch-list">
+      <article class="stretch-card" data-category="Gentle">
+        <div class="stretch-header">
+          <span class="stretch-title">Shoulder rolls</span>
+          <span class="tag">Gentle</span>
+        </div>
+        <p>Easy shoulder circles that help loosen up after long work sessions.</p>
+        <div class="how-to">How to do it: Sit or stand tall, roll your shoulders forward slowly 5 times, then backward 5 times.</div>
+        <div class="rating-row">
+          <label for="rating-shoulders">Rate this stretch</label>
+          <div class="rating-inputs">
+            <input id="rating-shoulders" type="number" min="1" max="5" step="1" value="5">
+            <button type="button" data-save-target="rating-shoulders" data-note-target="note-shoulders">Save review</button>
+          </div>
+          <textarea id="note-shoulders" placeholder="Tell us why it felt great, or why it didn't work for you"></textarea>
+          <div class="saved-review" id="saved-shoulders">No review saved yet.</div>
+        </div>
+      </article>
+
+      <article class="stretch-card" data-category="Desk">
+        <div class="stretch-header">
+          <span class="stretch-title">Seated spinal twist</span>
+          <span class="tag">Desk</span>
+        </div>
+        <p>A simple seated twist to ease tension while you stay at your desk.</p>
+        <div class="how-to">How to do it: Sit upright, place one hand on the opposite knee, and gently rotate your torso without forcing the movement.</div>
+        <div class="rating-row">
+          <label for="rating-twist">Rate this stretch</label>
+          <div class="rating-inputs">
+            <input id="rating-twist" type="number" min="1" max="5" step="1" value="5">
+            <button type="button" data-save-target="rating-twist" data-note-target="note-twist">Save review</button>
+          </div>
+          <textarea id="note-twist" placeholder="Tell us why it felt great, or why it didn't work for you"></textarea>
+          <div class="saved-review" id="saved-twist">No review saved yet.</div>
+        </div>
+      </article>
+
+      <article class="stretch-card" data-category="Quick">
+        <div class="stretch-header">
+          <span class="stretch-title">Standing calf stretch</span>
+          <span class="tag">Quick</span>
+        </div>
+        <p>Fast, focused calf work that fits into a busy schedule.</p>
+        <div class="how-to">How to do it: Step one foot back, press the heel down, and hold for 15 to 20 seconds before switching sides.</div>
+        <div class="rating-row">
+          <label for="rating-calf">Rate this stretch</label>
+          <div class="rating-inputs">
+            <input id="rating-calf" type="number" min="1" max="5" step="1" value="5">
+            <button type="button" data-save-target="rating-calf" data-note-target="note-calf">Save review</button>
+          </div>
+          <textarea id="note-calf" placeholder="Tell us why it felt great, or why it didn't work for you"></textarea>
+          <div class="saved-review" id="saved-calf">No review saved yet.</div>
+        </div>
+      </article>
+
+      <article class="stretch-card" data-category="Home">
+        <div class="stretch-header">
+          <span class="stretch-title">Child's pose</span>
+          <span class="tag">Home</span>
+        </div>
+        <p>A gentle floor stretch that helps release tension in your back and hips.</p>
+        <div class="how-to">How to do it: Kneel, sit back on your heels, and reach your arms forward while keeping your breathing slow and easy.</div>
+        <div class="rating-row">
+          <label for="rating-child-pose">Rate this stretch</label>
+          <div class="rating-inputs">
+            <input id="rating-child-pose" type="number" min="1" max="5" step="1" value="5">
+            <button type="button" data-save-target="rating-child-pose" data-note-target="note-child-pose">Save review</button>
+          </div>
+          <textarea id="note-child-pose" placeholder="Tell us why it felt great, or why it didn't work for you"></textarea>
+          <div class="saved-review" id="saved-child-pose">No review saved yet.</div>
+        </div>
+      </article>
+
+      <article class="stretch-card" data-category="Home">
+        <div class="stretch-header">
+          <span class="stretch-title">Hamstring stretch on the floor</span>
+          <span class="tag">Home</span>
+        </div>
+        <p>Great for loosening the back of your legs after a long day of sitting.</p>
+        <div class="how-to">How to do it: Lie on your back, lift one leg, and gently straighten it while keeping the other knee bent.</div>
+        <div class="rating-row">
+          <label for="rating-hamstring">Rate this stretch</label>
+          <div class="rating-inputs">
+            <input id="rating-hamstring" type="number" min="1" max="5" step="1" value="5">
+            <button type="button" data-save-target="rating-hamstring" data-note-target="note-hamstring">Save review</button>
+          </div>
+          <textarea id="note-hamstring" placeholder="Tell us why it felt great, or why it didn't work for you"></textarea>
+          <div class="saved-review" id="saved-hamstring">No review saved yet.</div>
+        </div>
+      </article>
+
+      <article class="stretch-card" data-category="At desk">
+        <div class="stretch-header">
+          <span class="stretch-title">Neck stretch</span>
+          <span class="tag">At desk</span>
+        </div>
+        <p>A simple side-to-side neck stretch that helps relieve desk-related tension.</p>
+        <div class="how-to">How to do it: Tilt your head toward one shoulder, hold for 10 to 15 seconds, and switch sides slowly.</div>
+        <div class="rating-row">
+          <label for="rating-neck">Rate this stretch</label>
+          <div class="rating-inputs">
+            <input id="rating-neck" type="number" min="1" max="5" step="1" value="5">
+            <button type="button" data-save-target="rating-neck" data-note-target="note-neck">Save review</button>
+          </div>
+          <textarea id="note-neck" placeholder="Tell us why it felt great, or why it didn't work for you"></textarea>
+          <div class="saved-review" id="saved-neck">No review saved yet.</div>
+        </div>
+      </article>
+
+      <article class="stretch-card" data-category="At desk">
+        <div class="stretch-header">
+          <span class="stretch-title">Wrist and forearm stretch</span>
+          <span class="tag">At desk</span>
+        </div>
+        <p>Helpful for easing stiffness from typing and mouse use.</p>
+        <div class="how-to">How to do it: Extend one arm forward, gently pull your fingers back, and hold for 10 seconds before switching hands.</div>
+        <div class="rating-row">
+          <label for="rating-wrist">Rate this stretch</label>
+          <div class="rating-inputs">
+            <input id="rating-wrist" type="number" min="1" max="5" step="1" value="5">
+            <button type="button" data-save-target="rating-wrist" data-note-target="note-wrist">Save review</button>
+          </div>
+          <textarea id="note-wrist" placeholder="Tell us why it felt great, or why it didn't work for you"></textarea>
+          <div class="saved-review" id="saved-wrist">No review saved yet.</div>
+        </div>
+      </article>
+    </div>
+
+    <p><a class="link" href="./index.html">Back home</a></p>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
