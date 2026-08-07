@@ -444,10 +444,10 @@ def build_page(path):
 
     if path == "/alarms":
         return """<!DOCTYPE html>
-<html lang=\"en\">
+<html lang="en">
 <head>
-  <meta charset=\"UTF-8\">
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stretch reminder</title>
   <style>
     body {
@@ -465,9 +465,8 @@ def build_page(path):
       padding: 2.5rem;
       border-radius: 24px;
       box-shadow: 0 16px 40px rgba(15, 23, 42, 0.2);
-      text-align: center;
-      max-width: 520px;
-      width: 90%;
+      max-width: 600px;
+      width: 92%;
       border: 2px solid #bfdbfe;
     }
     h1 {
@@ -475,48 +474,52 @@ def build_page(path):
       font-size: 2rem;
       color: #1d4ed8;
     }
-    .controls {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.75rem;
-      margin: 1.25rem 0;
-      flex-wrap: wrap;
-    }
-    .switch-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
+    .intro {
       color: #374151;
+      margin-bottom: 1rem;
+      line-height: 1.5;
     }
-    .control-group {
+    .form-row,
+    .form-grid {
       display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
       align-items: center;
-      gap: 0.5rem;
     }
-    input, select {
-      padding: 0.7rem;
+    .form-row label,
+    .form-grid label {
+      min-width: 120px;
+      color: #334155;
+      font-weight: 600;
+    }
+    input,
+    select {
+      padding: 0.75rem 0.9rem;
       border: 1px solid #cbd5e1;
-      border-radius: 8px;
+      border-radius: 0.75rem;
       font-size: 1rem;
+      color: #0f172a;
+      background: #ffffff;
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
     }
-    input {
-      width: 90px;
+    input[type="time"],
+    input[type="date"] {
+      width: 160px;
     }
     select {
-      min-width: 160px;
+      min-width: 200px;
+      flex: 1;
     }
     .button-row {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 1rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
+      margin-top: 1.5rem;
     }
     .button {
-      padding: 0.9rem 1.4rem;
+      padding: 0.95rem 1.4rem;
       border: none;
       border-radius: 999px;
       background: #2563eb;
@@ -524,23 +527,59 @@ def build_page(path):
       font-size: 1rem;
       font-weight: bold;
       cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
+      transition: transform 0.2s ease, background 0.2s ease;
     }
     .button.secondary {
       background: linear-gradient(135deg, #6b7280, #4b5563);
     }
     .button:hover {
-      background: linear-gradient(135deg, #1d4ed8, #1e40af);
       transform: translateY(-2px);
+      background: linear-gradient(135deg, #1d4ed8, #1e40af);
     }
     .button.secondary:hover {
       background: linear-gradient(135deg, #4b5563, #374151);
     }
+    .small-note {
+      color: #475569;
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+    }
+    .schedule-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.6rem;
+    }
+    .schedule-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      border-radius: 0.95rem;
+      background: #f8fbff;
+      border: 1px solid #cbd5e1;
+      color: #0f172a;
+      font-size: 0.95rem;
+    }
+    .schedule-item button {
+      padding: 0.45rem 0.75rem;
+      border: none;
+      border-radius: 0.75rem;
+      background: #ef4444;
+      color: white;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .schedule-item button:hover {
+      background: #dc2626;
+    }
     .status {
-      margin-top: 1rem;
+      margin-top: 1.25rem;
       font-weight: bold;
-      color: #374151;
+      color: #334155;
     }
     .message {
       margin-top: 0.75rem;
@@ -549,59 +588,168 @@ def build_page(path):
     }
     .link {
       display: inline-block;
-      margin-top: 1rem;
+      margin-top: 1.25rem;
       color: #2563eb;
       text-decoration: none;
+      font-weight: 700;
+    }
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class=\"card\">
+  <div class="card">
     <h1>Stretch reminder</h1>
-    <p>Set a custom reminder so you never forget to stand up and stretch.</p>
-    <div class=\"controls\">
-      <div class=\"control-group\">
-        <label for=\"hours\">Every</label>
-        <input id=\"hours\" type=\"number\" min=\"1\" step=\"1\" value=\"1\">
-        <span>hours</span>
+    <p class="intro">Pick how often you want to get reminders and keep the page open. Notifications will fire in the browser while this tab is active.</p>
+
+    <div class="form-row">
+      <label for="scheduleMode">Reminder type</label>
+      <select id="scheduleMode">
+        <option value="hours">Every N hours</option>
+        <option value="days">Every N days at time</option>
+        <option value="datetime">Specific date/time</option>
+      </select>
+    </div>
+
+    <div id="hoursSettings" class="form-row">
+      <label for="hours">Repeat every</label>
+      <input id="hours" type="number" min="1" value="1">
+      <span>hour(s)</span>
+    </div>
+
+    <div id="daysSettings" class="form-row hidden">
+      <label for="days">Repeat every</label>
+      <input id="days" type="number" min="1" value="1">
+      <span>day(s) at</span>
+      <input id="dayTime" type="time" value="09:00">
+    </div>
+
+    <div id="dateTimeSettings" class="form-row hidden" style="flex-direction: column; align-items: stretch; gap: 1rem;">
+      <div class="form-row" style="gap: 0.75rem;">
+        <label for="reminderDate">Date</label>
+        <input id="reminderDate" type="date">
       </div>
-      <div class=\"control-group\">
-        <label for=\"schedule\">Schedule</label>
-        <select id=\"schedule\">
-          <option value=\"daily\">Daily</option>
-          <option value=\"every-other-day\">Every other day</option>
-          <option value=\"every-week\">Every week</option>
-        </select>
+      <div class="form-row" style="gap: 0.75rem;">
+        <label for="reminderTime">Time</label>
+        <input id="reminderTime" type="time">
+      </div>
+      <button id="addDateTime" class="button secondary" type="button">Add date/time reminder</button>
+      <div>
+        <p class="small-note">Added reminders:</p>
+        <ul id="scheduleList" class="schedule-list"></ul>
       </div>
     </div>
-    <div class=\"controls\">
-      <div class=\"control-group\">
-        <label for=\"title\">Notification title</label>
-        <input id=\"title\" type=\"text\" value=\"Time to stretch\" maxlength=\"40\">
-      </div>
+
+    <div class="form-row" style="margin-top: 1.25rem; gap: 0.75rem;">
+      <label for="title">Notification title</label>
+      <input id="title" type="text" value="Time to stretch" maxlength="40">
     </div>
-    <div class=\"switch-row\">
-      <input id=\"softSound\" type=\"checkbox\">
-      <label for=\"softSound\">Soft sound</label>
+
+    <div class="form-row switch-row">
+      <input id="softSound" type="checkbox">
+      <label for="softSound">Soft sound</label>
     </div>
-    <div class=\"button-row\">
-      <button id=\"startBtn\" class=\"button\">Start reminder</button>
-      <button id=\"stopBtn\" class=\"button secondary\">Stop reminder</button>
+
+    <div class="button-row">
+      <button id="startBtn" class="button" type="button">Start reminder</button>
+      <button id="stopBtn" class="button secondary" type="button">Stop reminder</button>
     </div>
-    <p id=\"status\" class=\"status\">Status: idle</p>
-    <p id=\"message\" class=\"message\">Choose a time and start your stretch reminder.</p>
-    <a class=\"link\" href=\"/\">Back home</a>
+
+    <p id="status" class="status">Status: idle</p>
+    <p id="message" class="message">Choose a schedule and start your stretch reminder.</p>
+    <a class="link" href="/">Back home</a>
   </div>
+
   <script>
-    let timer = null;
+    const scheduleMode = document.getElementById('scheduleMode');
+    const hoursSettings = document.getElementById('hoursSettings');
+    const daysSettings = document.getElementById('daysSettings');
+    const dateTimeSettings = document.getElementById('dateTimeSettings');
     const hoursInput = document.getElementById('hours');
-    const scheduleInput = document.getElementById('schedule');
+    const daysInput = document.getElementById('days');
+    const dayTimeInput = document.getElementById('dayTime');
+    const reminderDateInput = document.getElementById('reminderDate');
+    const reminderTimeInput = document.getElementById('reminderTime');
+    const addDateTimeButton = document.getElementById('addDateTime');
+    const scheduleList = document.getElementById('scheduleList');
     const titleInput = document.getElementById('title');
     const softSoundInput = document.getElementById('softSound');
     const startBtn = document.getElementById('startBtn');
     const stopBtn = document.getElementById('stopBtn');
     const statusEl = document.getElementById('status');
     const messageEl = document.getElementById('message');
+
+    let activeTimers = [];
+    let repeatingTimer = null;
+    let scheduledDateTimes = [];
+
+    function updateVisibleSettings() {
+      hoursSettings.classList.toggle('hidden', scheduleMode.value !== 'hours');
+      daysSettings.classList.toggle('hidden', scheduleMode.value !== 'days');
+      dateTimeSettings.classList.toggle('hidden', scheduleMode.value !== 'datetime');
+    }
+
+    function setInitialDateTime() {
+      const now = new Date();
+      const dateValue = now.toISOString().slice(0, 10);
+      const timeValue = now.toTimeString().slice(0, 5);
+      reminderDateInput.value = dateValue;
+      reminderTimeInput.value = timeValue;
+    }
+
+    function formatScheduleItem(date) {
+      return date.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    function renderScheduleList() {
+      scheduleList.innerHTML = '';
+      scheduledDateTimes.sort((a, b) => a.getTime() - b.getTime()).forEach((date, index) => {
+        const item = document.createElement('li');
+        item.className = 'schedule-item';
+        const label = document.createElement('span');
+        label.textContent = formatScheduleItem(date);
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.textContent = 'Remove';
+        remove.addEventListener('click', () => {
+          scheduledDateTimes.splice(index, 1);
+          renderScheduleList();
+        });
+        item.appendChild(label);
+        item.appendChild(remove);
+        scheduleList.appendChild(item);
+      });
+    }
+
+    function addDateTimeReminder() {
+      const dateValue = reminderDateInput.value;
+      const timeValue = reminderTimeInput.value;
+      if (!dateValue || !timeValue) {
+        messageEl.textContent = 'Please choose both a date and a time.';
+        return;
+      }
+
+      const date = new Date(`${dateValue}T${timeValue}:00`);
+      if (Number.isNaN(date.getTime())) {
+        messageEl.textContent = 'That date/time is invalid.';
+        return;
+      }
+      if (date.getTime() <= Date.now()) {
+        messageEl.textContent = 'Please choose a future date and time.';
+        return;
+      }
+
+      scheduledDateTimes.push(date);
+      renderScheduleList();
+      messageEl.textContent = 'Date/time reminder added.';
+    }
+
+    function requestNotificationPermission() {
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission().catch(() => {});
+      }
+    }
 
     function playSoftSound() {
       if (!softSoundInput.checked) {
@@ -625,7 +773,7 @@ def build_page(path):
       context.close().catch(() => {});
     }
 
-    function showStretchAlert() {
+    function showNotification() {
       const title = titleInput.value.trim() || 'Time to stretch';
       const body = 'Stand up, roll your shoulders, and take a few slow breaths.';
       if ('Notification' in window && Notification.permission === 'granted') {
@@ -634,57 +782,113 @@ def build_page(path):
         window.alert(`${title}\n${body}`);
       }
       playSoftSound();
-      messageEl.textContent = `${title}: ${body}`;
       statusEl.textContent = 'Status: reminder triggered';
+      messageEl.textContent = `${title}: ${body}`;
+    }
+
+    function clearTimers() {
+      if (repeatingTimer) {
+        clearTimeout(repeatingTimer);
+        clearInterval(repeatingTimer);
+        repeatingTimer = null;
+      }
+      activeTimers.forEach((timerId) => clearTimeout(timerId));
+      activeTimers = [];
+    }
+
+    function scheduleHourlyReminder() {
+      const hours = Math.max(1, Number(hoursInput.value) || 1);
+      const delay = hours * 60 * 60 * 1000;
+      repeatingTimer = window.setTimeout(function tick() {
+        showNotification();
+        repeatingTimer = window.setTimeout(tick, delay);
+      }, delay);
+      statusEl.textContent = 'Status: running';
+      messageEl.textContent = `Reminder every ${hours} hour${hours === 1 ? '' : 's'}.`;
+    }
+
+    function scheduleDailyReminder() {
+      const days = Math.max(1, Number(daysInput.value) || 1);
+      const [hour, minute] = dayTimeInput.value.split(':').map(Number);
+      const now = new Date();
+      const next = new Date(now);
+      next.setHours(hour, minute, 0, 0);
+      if (next.getTime() <= now.getTime()) {
+        next.setDate(next.getDate() + days);
+      }
+      const delay = next.getTime() - now.getTime();
+
+      const scheduleNext = () => {
+        showNotification();
+        repeatingTimer = window.setTimeout(scheduleNext, days * 24 * 60 * 60 * 1000);
+      };
+
+      repeatingTimer = window.setTimeout(scheduleNext, delay);
+      statusEl.textContent = 'Status: running';
+      messageEl.textContent = `Reminder every ${days} day${days === 1 ? '' : 's'} at ${dayTimeInput.value}.`;
+    }
+
+    function scheduleDateTimeReminders() {
+      if (!scheduledDateTimes.length) {
+        messageEl.textContent = 'Add at least one date and time before starting.';
+        return;
+      }
+
+      scheduledDateTimes.forEach((date) => {
+        const delay = date.getTime() - Date.now();
+        if (delay > 0) {
+          const timerId = window.setTimeout(() => {
+            showNotification();
+            renderScheduleList();
+          }, delay);
+          activeTimers.push(timerId);
+        }
+      });
+
+      statusEl.textContent = 'Status: running';
+      messageEl.textContent = `Scheduled ${scheduledDateTimes.length} reminder(s). Keep this page open.`;
+    }
+
+    function startReminder() {
+      requestNotificationPermission();
+      clearTimers();
+
+      if (scheduleMode.value === 'hours') {
+        scheduleHourlyReminder();
+      } else if (scheduleMode.value === 'days') {
+        scheduleDailyReminder();
+      } else {
+        scheduleDateTimeReminders();
+      }
     }
 
     function stopReminder() {
-      if (timer) {
-        clearInterval(timer);
-        timer = null;
-      }
+      clearTimers();
       statusEl.textContent = 'Status: stopped';
       messageEl.textContent = 'Reminder stopped.';
     }
 
-    function getScheduleLabel() {
-      const hours = Math.max(1, Number(hoursInput.value) || 1);
-      const schedule = scheduleInput.value;
-      if (schedule === 'daily') {
-        return `Daily reminder every ${hours} hour${hours === 1 ? '' : 's'}.`;
-      }
-      if (schedule === 'every-other-day') {
-        return `Reminder every other day, every ${hours} hour${hours === 1 ? '' : 's'}.`;
-      }
-      return `Reminder every week, every ${hours} hour${hours === 1 ? '' : 's'}.`;
-    }
-
-    startBtn.addEventListener('click', () => {
-      const hours = Math.max(1, Number(hoursInput.value) || 1);
-      if ('Notification' in window && Notification.permission === 'default') {
-        Notification.requestPermission().catch(() => {});
-      }
-      stopReminder();
-      timer = window.setInterval(showStretchAlert, hours * 60 * 60 * 1000);
-      statusEl.textContent = 'Status: running';
-      messageEl.textContent = getScheduleLabel();
-    });
-
+    scheduleMode.addEventListener('change', updateVisibleSettings);
+    addDateTimeButton.addEventListener('click', addDateTimeReminder);
+    startBtn.addEventListener('click', startReminder);
     stopBtn.addEventListener('click', stopReminder);
+
+    setInitialDateTime();
+    updateVisibleSettings();
   </script>
 </body>
 </html>"""
 
     return """<!DOCTYPE html>
-<html lang=\"en\">
+<html lang="en">
 <head>
-  <meta charset=\"UTF-8\">
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Not found</title>
 </head>
 <body>
   <h1>Page not found</h1>
-  <p><a href=\"/\">Go home</a></p>
+  <p><a href="/">Go home</a></p>
 </body>
 </html>"""
 
