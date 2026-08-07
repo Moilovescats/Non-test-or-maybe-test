@@ -26,6 +26,13 @@ class AppPageTests(unittest.TestCase):
         self.assertIn("Gentle", page)
         self.assertIn("Shoulder rolls", page)
 
+    def test_stretches_page_persists_reviews_with_browser_storage(self):
+        page = build_page("/stretches")
+
+        self.assertIn("localStorage", page)
+        self.assertIn("setItem", page)
+        self.assertIn("getItem", page)
+
 
 if __name__ == "__main__":
     unittest.main()

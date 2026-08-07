@@ -406,6 +406,48 @@ def build_page(path):
     const filterButtons = Array.from(document.querySelectorAll('.filter-pill'));
     const cards = Array.from(document.querySelectorAll('.stretch-card'));
     const reviewButtons = Array.from(document.querySelectorAll('button[data-save-target]'));
+    const storagePrefix = 'stretchitout-review-';
+
+    const getStorageKey = (targetId) => `${storagePrefix}${targetId}`;
+
+    const saveReview = (targetId, rating, note) => {
+      try {
+        window.localStorage.setItem(getStorageKey(targetId), JSON.stringify({ rating, note }));
+      } catch (error) {
+        console.warn('Unable to save review', error);
+      }
+    };
+
+    const restoreReview = (targetId, noteId, savedReview) => {
+      try {
+        const raw = window.localStorage.getItem(getStorageKey(targetId));
+        if (!raw) {
+          return;
+        }
+
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') {
+          return;
+        }
+
+        const ratingInput = document.getElementById(targetId);
+        const noteInput = document.getElementById(noteId);
+
+        if (ratingInput) {
+          ratingInput.value = parsed.rating ?? ratingInput.value;
+        }
+
+        if (noteInput) {
+          noteInput.value = parsed.note ?? '';
+        }
+
+        if (savedReview) {
+          savedReview.textContent = `Saved review: ${parsed.rating ?? 5}/5 — ${parsed.note || 'No extra note provided.'}`;
+        }
+      } catch (error) {
+        console.warn('Unable to restore review', error);
+      }
+    };
 
     filterButtons.forEach((button) => {
       button.addEventListener('click', () => {
@@ -436,7 +478,18 @@ def build_page(path):
         const note = noteInput.value.trim() || 'No extra note provided.';
         const safeRating = Number.isFinite(rating) ? Math.min(5, Math.max(1, Math.round(rating))) : 5;
         savedReview.textContent = `Saved review: ${safeRating}/5 — ${note}`;
+        saveReview(targetId, safeRating, note);
       });
+    });
+
+    reviewButtons.forEach((button) => {
+      const targetId = button.dataset.saveTarget;
+      const noteId = button.dataset.noteTarget;
+      const savedReview = document.getElementById(`saved-${targetId.replace('rating-', '')}`);
+
+      if (targetId && noteId && savedReview) {
+        restoreReview(targetId, noteId, savedReview);
+      }
     });
   </script>
 </body>
